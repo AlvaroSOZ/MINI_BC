@@ -105,7 +105,7 @@ if "perdio" not in st.session_state:
 
 # ============ 6. LAYOUT DE INTERFAZ Y CONTROLES ============
 if st.session_state.get("perdio", False):
-    st.error("🚨 El juego terminó porque la inflación salió del rango permitido (±3%). Presiona Recarga la pagina para comenzar de nuevo.", width=600)
+    st.error("🚨 El juego terminó porque la inflación salió del rango permitido (±3%). Recarga la pagina para comenzar de nuevo.", width=600)
     st.image("SIMULACION/sad.jpg", caption="😢 Has perdido el juego y pusiste triste a Julio Velarde", width=600)
     st.stop()
 
