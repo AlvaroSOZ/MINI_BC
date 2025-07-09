@@ -216,7 +216,7 @@ with col_graficos:
 
     idx = st.session_state.index
     df_plot = st.session_state.df_juego.copy()
-    df_plot = df_plot.iloc[max(0, idx -36):idx + 1]
+    df_plot = df_plot.iloc[max(0, idx -30):idx + 1]
     df_plot["fecha_fmt"] = df_plot["fecha"].dt.strftime("%b-%y")
     df_plot["tasa_real"] = df_plot["tasa"] - df_plot["einfla"]
 
@@ -235,12 +235,25 @@ with col_graficos:
         st.plotly_chart(fig_infla, use_container_width=True)
 
         # 2. Brecha del producto
+          # 2. Brecha del producto
         fig_brecha = go.Figure()
-        fig_brecha.add_trace(go.Scatter(x=df_plot["fecha_fmt"], y=df_plot["brecha"],
-                                    name="Brecha del Producto (Y'ₜ)", mode="lines+markers"))
-        fig_infla.add_trace(go.Scatter(x=df_plot["fecha_fmt"], y=[0]*len(df_plot),
-                               name="Línea base (0%)", line=dict(color="red", dash="dot")))
-        fig_brecha.update_layout(title="Brecha del Producto (Y'ₜ)", xaxis_title="Fecha", yaxis_title="%")
+
+        # Línea de la brecha observada
+        fig_brecha.add_trace(go.Scatter(x=df_plot["fecha_fmt"], y=df_plot["brecha"], name="Brecha del Producto (Y'ₜ)", mode="lines+markers"))
+
+        # Línea base en Y = 0
+        fig_brecha.add_trace(go.Scatter( x=df_plot["fecha_fmt"], y=[0] * len(df_plot),  name="Línea base (0%)", mode="lines", line=dict(color="red", dash="dot")))
+
+        # Layout: leyenda al lado derecho
+        fig_brecha.update_layout( title="Brecha del Producto (Y'ₜ)", xaxis_title="Fecha", yaxis_title="%",legend=dict(title="Leyenda",
+                orientation="v",  
+                x=1.02,           
+                y=1,
+                xanchor="left"
+            ),
+            margin=dict(r=150)  
+        )
+
         st.plotly_chart(fig_brecha, use_container_width=True)
 
         # 3. Tasa nominal vs real
